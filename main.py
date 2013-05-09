@@ -1,4 +1,10 @@
 import random
+from Tkinter import *
+from tkSnack import *
+
+root = Tkinter.Tk()
+root.withdraw()
+initializeSnack(root)
 
 name_freq_l = [('A4', 440), ('A3', 220), ('C4', 262)]
 
@@ -30,6 +36,13 @@ def beep(freq, duration=1, volume=1):
     '''Plays a beep of frequency "freq"'''
     print "BEEP: freq{}".format(freq) 
 
+    s = Sound()
+    filt = Filter('generator', 440, 30000, 0.0, 'sine', 8000)
+
+    filt.configure(freq)
+    s.play(filter=filt,blocking=1)
+
+
 def scale_dist(one, two):
     '''Returns how much higher note two is than note one in semitones'''
     print "DIFFERENCE: {} {}".format(one.lower(), two.lower())
@@ -45,5 +58,6 @@ def scale_dist(one, two):
     return letter_d + number_d
 
 if __name__ == "__main__":
-    run(invert=True)
+    run()
+    beep(440)
 
