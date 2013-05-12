@@ -45,7 +45,7 @@ def run(questions, invert, octaves):
     '''Main function that presents the stimuli and prints results'''
     test_l = gen_octave(*octaves)
     while questions > len(test_l): # e.g. asking 50 questions about 12 notes
-        test_l.append(test_l)
+        test_l.extend(test_l)
     random.shuffle(test_l)
 
     right_l, error_l = [], []
@@ -57,11 +57,11 @@ def run(questions, invert, octaves):
         right_l.append(right)
         error_l.append(error)
     
-    print "Overall: {}/{} correct".format(right_l.count(True), questions)
+    correct = right_l.count(True)
+    print "Overall: {}/{} correct, {:.1%}%".format(correct, questions, float(correct)/questions)
     units = "semitones" if invert else "Hz"
     print "Off by an average of {:.0f} {}".format(sum(error_l)/len(error_l), units)
     print 'Full results: ', zip(right_l, error_l)
-
 
 def ask_freq(name, freq):
     '''Ask "what frequency is this musical note"? Returns tuple of correctness (bool) and error (float)'''
@@ -73,8 +73,9 @@ def ask_freq(name, freq):
             return False
     ans = ''
     while not is_float(ans):
-        ans = raw_input("What frequency is {}? (example answers: '440', '440.2') ".format(name))
-    ans = float(ans)
+        ans = float(raw_input("What frequency is {}? (example answers: '440', '440.2') ".format(name)))
+    if training:
+        print "Answer: {} Hz".format(freq)
     return ans == freq, ans - freq
 
 def ask_name(name, freq):
@@ -83,6 +84,8 @@ def ask_name(name, freq):
     ans = ''
     while not is_note(ans):
         ans = raw_input("What note was just played? (example answers: 'A4', 'a4') ".format(name))
+    if training:
+        print "Answer: {}".format(name)
     return ans.upper() in name, scale_dist(name, ans)
 
 def beep(freq, duration=1, volume=1):
@@ -111,8 +114,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-q', type=int, dest='questions', default=10)
     parser.add_argument('--names', action='store_const', const=True, default=False)
+    parser.add_argument('--training', action='store_const', const=True, default=False)
     parser.add_argument('--octaves', type=int, nargs=2, default=[4,4])
     args = parser.parse_args()
+    training = args.training
 
     run(args.questions, args.names, args.octaves)
 
