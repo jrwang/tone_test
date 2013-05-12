@@ -23,9 +23,14 @@ python test.py
 
 Do 20 questions instead of the default (10)
 ```bash
-python test.py 20
+python test.py -q 20
 ```
 Do 20 questions and test note names instead of frequencies
 ```bash
-python test.py 20 names
+python test.py -q 20 --names
+```
+
+Test notes from the C5-B6 octaves instead of the default (C4-B4)
+```bash
+python test.py --octaves 5 6
 ```
