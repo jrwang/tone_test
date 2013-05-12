@@ -41,9 +41,9 @@ def gen_octave(start, end):
         start += 1
     return tones
     
-def run(questions=10, invert=False, start_oct=4, end_oct=4):
+def run(questions, invert, octaves):
     '''Main function that presents the stimuli and prints results'''
-    test_l = gen_octave(start_oct, end_oct)
+    test_l = gen_octave(*octaves)
     while questions > len(test_l): # e.g. asking 50 questions about 12 notes
         test_l.append(test_l)
     random.shuffle(test_l)
@@ -111,7 +111,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-q', type=int, dest='questions', default=10)
     parser.add_argument('--names', action='store_const', const=True, default=False)
+    parser.add_argument('--octaves', type=int, nargs=2, default=[4,4])
     args = parser.parse_args()
 
-    run(args.questions, args.names)
+    run(args.questions, args.names, args.octaves)
 
