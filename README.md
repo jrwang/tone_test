@@ -21,16 +21,18 @@ Quick demo:
 python test.py 
 ```
 
-Do 20 questions instead of the default (10)
+Test note names instead of frequencies
 ```bash
-python test.py -q 20
+python test.py --names
 ```
-Do 20 questions and test note names instead of frequencies
+
+Test 20 questions instead of the default (10) and with no sharps or no flats
 ```bash
-python test.py -q 20 --names
+python test.py -q 20 --nosharps --noflats
 ```
 
 Test notes from the C5-B6 octaves instead of the default (C4-B4)
 ```bash
 python test.py --octaves 5 6
 ```
+
